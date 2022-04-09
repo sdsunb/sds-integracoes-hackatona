@@ -1,0 +1,137 @@
+#step-one {
+    margin-top: 1%;
+    margin-bottom: 1%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    #origin{
+        width:75%;
+        
+    }
+
+    .loader{
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: url('//gestor.rcc.com.br/images/loading.gif') 
+        50% 50% no-repeat rgba(250, 250, 250, 0.575);
+        background-size: 100px 100px;
+        
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+    .content {
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        max-width: 900px;
+        margin-top: 25px;
+
+        p {
+            font: 700 12px 'Arial', sans-serif;
+            text-align:justify;
+            margin-right: 10%;           
+            color: rgb(248, 246, 246);
+            margin-top: 8px;
+        }
+        .warning {
+            color: #f7b46d;
+        }
+        h3{
+            color: white;
+        }
+
+    }
+    .border{
+        border: 2px solid rgba(224, 224, 224, 0.938);
+        border-radius: 10px;
+        background-color: #fff;
+        box-shadow:1px rgb(223, 221, 221);
+    }
+
+
+
+    .main-content {
+        flex-direction: column;
+        width: 100%;
+        max-width: 600px;
+        text-align: center;
+        justify-content: center;
+        
+        .information {
+            p {
+                margin-top: 20px;
+            }
+        }
+
+        .step-buttons {
+            flex-direction: row;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            justify-content: center;
+            margin-top: 20px;
+            .button {
+                margin-left: 35px;
+                background-color: #ffffff;
+                color: teal;
+            }
+        }
+
+        h2 {
+            font: 700 26px 'Roboto', sans-serif;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        form {
+            margin-top: 20px;
+            #label {
+                margin-top: 15px;
+                font: bold;
+                font-size: 18px;
+                text-align: center;
+            }
+            select {
+                margin-top: 5px;
+                width: 300px;
+                height: 45px;
+                border-radius: 8px;
+                text-align: center;
+            }
+            textarea {
+                margin-top: 5px;
+                width: 300px;
+                height: 100px;
+                border-radius: 8px;
+            }
+            button{
+                width: 35%;
+                margin-bottom: 25px;
+            } 
+
+            input, select, textarea {
+                width: 400px;
+            }
+        }
+
+        
+        .footer{
+            background-color: #fff;
+        }
+        h2{
+            margin-top: 5%;
+            color:teal ;
+        }
+    }
+
+}
