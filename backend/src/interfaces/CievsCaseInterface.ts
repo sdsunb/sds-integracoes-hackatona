@@ -55,6 +55,11 @@ export enum RacaCor {
     Empty = ""
 }
 
+export enum Hospitalization {
+    Isolation = "LNG_REFERENCE_DATA_CATEGORY_PERSON_DATE_TYPE_ISOLATION",
+    Hospitalization = "LNG_REFERENCE_DATA_CATEGORY_PERSON_DATE_TYPE_HOSPITALIZATION"
+}
+
 interface DocumentObject {
     type: DocumentType,
     number: String      // It's funny, but its serious. The "number" attribute can be filled with anything (string).
@@ -200,21 +205,26 @@ export let defaultCase: ICievsCase = {
     visualId: "",
     dob: null,
     occupation: "",
-    documents: [],
+    documents: [
+        {
+            type: "",
+            number: ""
+        }
+    ],
     addresses: [
         {
             typeId: "LNG_REFERENCE_DATA_CATEGORY_ADDRESS_TYPE_USUAL_PLACE_OF_RESIDENCE",
             addressLine1: "",
             locationId: "",
             geoLocationAccurate: false,
-            date: new Date(),
+            date: null,
         }
     ],
     duplicateKeys: {
         document: [],
         name: []
     },
-    dateOfReporting: new Date(),
+    dateOfReporting: actualDate,
     isDateOfReportingApproximate: false,
     dateOfOnset: null,
     dateRanges: [],
@@ -222,7 +232,7 @@ export let defaultCase: ICievsCase = {
     // dateOfOutcome: null,
     hasRelationships: false,
     usualPlaceOfResidenceLocationId: "",
-    createdAt: new Date(),
+    createdAt: actualDate,
     createdBy: "",
     createdOn: "API",
     deleted: false,
@@ -230,6 +240,6 @@ export let defaultCase: ICievsCase = {
     address: {},
     numberOfContacts: 0,
     numberOfExposures: 0,
-    updatedAt: new Date(),
+    updatedAt: actualDate,
     updatedBy: ""
 }
