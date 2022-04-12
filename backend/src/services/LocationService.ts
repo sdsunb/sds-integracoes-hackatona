@@ -24,6 +24,25 @@ class LocationService {
             return error.response.data;
         }
     }
+
+    getByName(locationName: string) {
+        try {
+            // Gets the location by name
+            const location: any = this.filteredLocations.filter((obj) => {
+                return obj.name === locationName;
+            })[0];
+    
+            if(location === undefined) {
+                return '';
+            } else {
+                return location.id;
+            }
+
+        } catch(error) {
+            console.error(error);
+            throw new Error(error);
+        }
+    }
 }
 
 export { LocationService };
