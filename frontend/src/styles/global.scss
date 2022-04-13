@@ -1,0 +1,22 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: teal;
+    color: #504B4C;
+}
+
+body, input, button, textarea {
+    font: 400 16px 'Roboto', sans-serif;
+}
+
+p {
+    font: 700 16px 'Roboto', sans-serif;
+    a {
+        color: #4DB0A0;
+        text-decoration: none;
+    }
+}
