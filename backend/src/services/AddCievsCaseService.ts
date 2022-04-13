@@ -1,13 +1,15 @@
 import axios from "axios";
-import { Classification, CriterioConfirmacao, defaultCase, DocumentType, FormaTransmissao, ICievsCase, OutcomeId, PregnancyStatus, RacaCor } from "../interfaces/CievsCaseInterface";
+import { Classification, CriterioConfirmacao, defaultCase, DocumentType, FormaTransmissao, Hospitalization, ICievsCase, OutcomeId, PregnancyStatus, RacaCor } from "../interfaces/CievsCaseInterface";
 import { getSpreadsheetPath } from "../utils/GetSpreadsheetPath";
 import readXlsxFile from "read-excel-file/node";
 import { getDate } from "../utils/StringToDate";
 import { Gender } from "../interfaces/CaseInterface";
+import { LocationService } from "./LocationService";
 
 interface IRequestData {
     apiAddress: string,
-    route: string
+    route: string,
+    token: string
 }
 
 interface IResult {
@@ -65,6 +67,10 @@ const schema = {
         prop: 'phoneNumber',
         type: String
     },
+    'RA': {
+        prop: 'locationId',
+        type: String
+    },
     'enderecoCompleto': {
         prop: 'addressLine1',
         type: String
@@ -92,11 +98,11 @@ const schema = {
 
     // Date Ranges (Isolation and Hospitalization)
     'quarentena': {     // Date ranges -> Isolation
-        prop: 'typeId',
+        prop: 'quarentena',
         type: String
     },
     'hospitalizacao': {     // Date ranges -> Hospitalization
-        prop: 'typeId',
+        prop: 'hospitalizacao',
         type: String
     },
     'nomeHospital': {
@@ -104,11 +110,11 @@ const schema = {
         type: String
     },
     'dataHospitalizacao': {
-        prop: 'startDate',
+        prop: 'dataHospitalizacao',
         type: String
     },
     'dataQuarentena': {
-        prop: 'startDate',
+        prop: 'dataQuarentena',
         type: String
     },
 
@@ -174,6 +180,9 @@ class AddCievsCaseService {
             'Access-Control-Allow-Origin': "*"
         }
 
+        const locationService = new LocationService();
+        await locationService.getByParentId(process.env.PARENT_LOCATION_ID, requestData.token);
+
         let newCase: ICievsCase = defaultCase;
         let requestResult: IResult = {
             status: 'SUCESSO',
@@ -186,9 +195,10 @@ class AddCievsCaseService {
         try {
             const file = await getSpreadsheetPath();
             await readXlsxFile(file, { schema }).then(async ({ rows, errors }) => {
-                console.log("PLANILHA EM JSON:", rows);
 
-                await rows.map(async (col: any, index: number) => {
+                rows.map(async (col: any) => {
+                    // Basic information
+                    newCase = defaultCase;
                     newCase.visualId = col.visualId;
                     newCase.firstName = col.firstName;
                     newCase.gender = getGender(col.gender);
@@ -199,28 +209,48 @@ class AddCievsCaseService {
                     newCase.dateOfReporting = getDate(col.dateOfReporting);
                     newCase.dateOfOnset = getDate(col.dateOfOnset);
 
+                    if(col.pregnancyStatus === 'Sim') {
+                        newCase.pregnancyStatus = PregnancyStatus.ThirdTrimester;
+                    }
+
+                    // if has CPF, fills document type and document number
+                    if(col.number) {
+                        newCase.documents[0].type = DocumentType.Cpf;
+                        newCase.documents[0].number = col.number;
+                    }
+
                     if(col.dataAltaMedica) {
                         newCase.dateOfOutcome = getDate(col.dataAltaMedica);
                     } else if(col.dataObito) {
                         newCase.dateOfOutcome = getDate(col.dataObito);
                     }
 
-                    // Classification in CIEVS always is CONFIRMED by default
+                    // Classification in cievs ALWAYS is CONFIRMED by default
                     // newCase.classification = getClassification(col.classification);
                     
                     // addresses
                     newCase.addresses[0].phoneNumber = col.phoneNumber;
                     newCase.addresses[0].addressLine1 = col.addressLine1;
                     newCase.addresses[0].postalCode = col.postalCode;
-                    // newCase.addresses[0].locationId = 'dd2fbc8c-3717-47b3-ae20-45c9da6c7876';
+                    newCase.addresses[0].locationId = locationService.getByName(col.locationId);
+                    
+                    // Date Ranges: Hospitalization/Isolation
+                    newCase.dateRanges = [];
+                    if(col.quarentena === 'Residência') {
+                        newCase.dateRanges.push({
+                            typeId: Hospitalization.Isolation,
+                            comments: '',
+                            startDate: getDate(col.dataQuarentena)
+                        });
+                    } else if(col.quarentena === 'Hospital') {
+                        newCase.dateRanges.push({
+                            typeId: Hospitalization.Hospitalization,
+                            comments: col.comments,
+                            startDate: getDate(col.dataHospitalizacao)
+                        });
+                    }
 
-                    // newCase.createdBy = fill this, it'll relevant
-
-                    // if has CPF, fills document type and document number
-                    // if(col.number) {
-                    //     newCase.documents[0].type = DocumentType.Cpf;
-                    //     newCase.documents[0].number = col.number;
-                    // }
+                    // newCase.createdBy = fill this, it'll relevant;
 
                     // questionnaire Answers
                     if(col.telefone_fixo) {
@@ -242,17 +272,10 @@ class AddCievsCaseService {
                         newCase.questionnaireAnswers.comorbidades[0].value = "2"    // "2" is the value to "Não" in questionnaire answers
                     }
 
-                    // newCase.createdBy = '928b8d14-b3cd-4af2-80bc-de17ed862a58';
-                    // newCase.updatedBy = '928b8d14-b3cd-4af2-80bc-de17ed862a58';
-                    // newCase.updatedAt = new Date();
-                    
-
-
                     try {
-                        var response = await axios.post(requestData.apiAddress + requestData.route, newCase, { headers });
+                        var response = await axios.post(requestData.apiAddress + requestData.route + requestData.token, newCase, { headers });
                         console.log(response);
                         requestResult.casesAdded += 1;
-                        // console.log("Adicionando caso", index, newCase);
                     } catch(error) {
                         console.log("Deu ruim", requestResult);
                         requestResult.casesFail.quantity += 1;
