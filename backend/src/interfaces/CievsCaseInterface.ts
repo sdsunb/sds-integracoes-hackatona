@@ -88,9 +88,9 @@ export interface ICievsCase {
         qual?: Array<any>
     },
     vaccinesReceived: Array<any>,
-    pregnancyStatus: String,
+    pregnancyStatus: PregnancyStatus,
     outbreakId: String,
-    visualId: String,
+    visualId?: String,
     dob: Date,
     age?: {
         years: Number,
@@ -118,25 +118,18 @@ export interface ICievsCase {
         document: Array<any>,
         name: Array<any>
     }
-    updatedAt: Date;
+    updatedAt?: Date;
     dateOfReporting: Date,
-    isDateOfReportingApproximate: boolean,
+    isDateOfReportingApproximate?: boolean,
     dateOfOnset: Date,
     dateRanges: Array<any>,
     classificationHistory: Array<any>,
     dateOfOutcome?: Date,
-    hasRelationships: boolean,
-    usualPlaceOfResidenceLocationId: String,
-    createdAt: Date,
-    createdBy: String,
-    createdOn: String,
-    deleted: boolean,
-    locations: Array<any>,
-    address: object,
-    numberOfContacts: Number,
-    numberOfExposures: Number,
-    updatedBy?: String
-    // updatedByUser: object
+    hasRelationships?: boolean,
+    locations?: Array<any>,
+    address?: object,
+    numberOfContacts?: Number,
+    numberOfExposures?: Number
 }
 
 let serverHour = new Date();
@@ -145,6 +138,8 @@ actualDate.setHours(serverHour.getHours() - 3);
 
 export let defaultCase: ICievsCase = {
     firstName: "",
+    lastName: "",
+    gender: Gender.Empty,
     wasContact: false,
     outcomeId: OutcomeId.Empty,
     safeBurial: false,
@@ -200,9 +195,8 @@ export let defaultCase: ICievsCase = {
 
     },
     vaccinesReceived: [],
-    pregnancyStatus: "",
+    pregnancyStatus: PregnancyStatus.None,
     outbreakId: process.env.OUTBREAK_ID,
-    visualId: "",
     dob: null,
     occupation: "",
     documents: [
@@ -225,21 +219,8 @@ export let defaultCase: ICievsCase = {
         name: []
     },
     dateOfReporting: actualDate,
-    isDateOfReportingApproximate: false,
     dateOfOnset: null,
     dateRanges: [],
     classificationHistory: [],
     // dateOfOutcome: null,
-    hasRelationships: false,
-    usualPlaceOfResidenceLocationId: "",
-    createdAt: actualDate,
-    createdBy: "",
-    createdOn: "API",
-    deleted: false,
-    locations: [],
-    address: {},
-    numberOfContacts: 0,
-    numberOfExposures: 0,
-    updatedAt: actualDate,
-    updatedBy: ""
 }
