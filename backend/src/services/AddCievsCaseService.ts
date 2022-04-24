@@ -196,7 +196,7 @@ class AddCievsCaseService {
             const file = await getSpreadsheetPath();
             await readXlsxFile(file, { schema }).then(async ({ rows, errors }) => {
 
-                rows.map(async (col: any) => {
+                await rows.map(async (col: any) => {
                     // Basic information
                     newCase = defaultCase;
                     newCase.visualId = col.visualId;

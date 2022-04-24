@@ -5,9 +5,9 @@ import path from "path";
 class ValidateSpreadsheetController {
     async handle(request: Request, response: Response) {
         try {
-            
+
             const origin = request.params.origin;
-            
+
             if(!request.file) {
                 return response.status(400).send("Envie um arquivo no formato .xlsx!");
             }

@@ -6,7 +6,8 @@ class AddCasesService {
         
         const requestData = {
             apiAddress: process.env.API_ADDRESS,
-            route: `/outbreaks/${outbreakId}/cases?access_token=${authToken}`
+            route: `/outbreaks/${outbreakId}/cases`,
+            token: `?access_token=${authToken}`
         }
 
         let response: Object;

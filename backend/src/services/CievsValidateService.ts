@@ -46,6 +46,10 @@ const schema = {
         prop: 'phoneNumber',
         type: String
     },
+    'RA': {
+        prop: 'locationId',
+        type: String
+    },
     'enderecoCompleto': {
         prop: 'addressLine1',
         type: String
@@ -63,21 +67,21 @@ const schema = {
         type: String
     },
     'dataAltaMedica': {
-        prop: 'dateOfOutcome',
+        prop: 'dataAltaMedica',
         type: String
     },
     'dataObito': {
-        prop: 'dateOfOutcome',
+        prop: 'dataObito',
         type: String
     },
 
     // Date Ranges (Isolation and Hospitalization)
     'quarentena': {     // Date ranges -> Isolation
-        prop: 'typeId',
+        prop: 'quarentena',
         type: String
     },
     'hospitalizacao': {     // Date ranges -> Hospitalization
-        prop: 'typeId',
+        prop: 'hospitalizacao',
         type: String
     },
     'nomeHospital': {
@@ -85,12 +89,10 @@ const schema = {
         type: String
     },
     'dataHospitalizacao': {
-        prop: 'startDate',
-        type: String
+        prop: 'dataHospitalizacao'
     },
     'dataQuarentena': {
-        prop: 'startDate',
-        type: String
+        prop: 'dataQuarentena'
     },
 
     // Questionnaire Answers
