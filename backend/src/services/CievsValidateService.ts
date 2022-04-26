@@ -1,5 +1,4 @@
 import readXlsxFile from "read-excel-file/node";
-import { Classification, PregnancyStatus } from "../interfaces/CaseInterface";
 
 interface IValidation {
     caseNumbers: number;
@@ -200,7 +199,6 @@ class CievsValidateService {
             validation.amountOfErrors = errors.length;
         });
         
-
         return validation;
     }
 
