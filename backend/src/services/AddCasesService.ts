@@ -1,4 +1,4 @@
-import { AddEsusCaseService } from "./AddEsusCaseService";
+// import { AddEsusCaseService } from "./AddEsusCaseService";
 import { AddCievsCaseService } from "./AddCievsCaseService";
 
 class AddCasesService {
@@ -12,13 +12,14 @@ class AddCasesService {
 
         let response: Object;
 
-        if(origin === 'esus') {
-            const addEsusCaseService = new AddEsusCaseService();
-            response = await addEsusCaseService.execute(requestData);
-        } else if(origin === 'cievs') {
+        if(origin === 'cievs') {
             const addCievsCaseService = new AddCievsCaseService();
             response = await addCievsCaseService.execute(requestData);
-        }
+        } 
+        // else if(origin === 'esus') {
+        //     const addEsusCaseService = new AddEsusCaseService();
+        //     response = await addEsusCaseService.execute(requestData);
+        // }
         
         return response;
     }
