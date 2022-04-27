@@ -145,7 +145,7 @@ const schema = {
     },
 }
 
-class EsusValidateService {
+class ValidateEsusService {
     async execute(filePath: string) {
 
         let validation: IValidation = {
@@ -167,4 +167,4 @@ class EsusValidateService {
     }
 }
 
-export { EsusValidateService };
+export { ValidateEsusService };

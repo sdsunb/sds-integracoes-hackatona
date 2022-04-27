@@ -1,5 +1,5 @@
-import { EsusValidateService } from "./EsusValidateService";
-import { CievsValidateService } from "./CievsValidateService";
+import { ValidateEsusService } from "./ValidateEsusService";
+import { ValidateCievsService } from "./ValidateCievsService";
 import path from "path";
 
 enum Origin {
@@ -27,12 +27,12 @@ class SpreadsheetService {
         let validation: IValidation;
 
         if(origin === 'esus') {
-            const esusValidateService = new EsusValidateService();
+            const esusValidateService = new ValidateEsusService();
             validation = await esusValidateService.execute(filePath);
         }
 
         if(origin === 'cievs') {
-            const cievsService = new CievsValidateService();
+            const cievsService = new ValidateCievsService();
             validation = await cievsService.execute(filePath);
         }
 

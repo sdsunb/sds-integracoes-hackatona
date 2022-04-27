@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import { SpreadsheetService } from "../services/SpreadsheetService";
-import path from "path";
+import { SpreadsheetService } from "../services/ValidateSpreadsheetService";
 
 class ValidateSpreadsheetController {
     async handle(request: Request, response: Response) {

@@ -149,7 +149,7 @@ const schema = {
     }
 }
 
-class CievsValidateService {
+class ValidateCievsService {
     // The Dictionary from this business rule is found in the spreadsheet
     async execute(filePath: string) {
 
@@ -204,4 +204,4 @@ class CievsValidateService {
 
 }
 
-export { CievsValidateService };
+export { ValidateCievsService };
