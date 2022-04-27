@@ -3,7 +3,7 @@ import { Classification, CriterioConfirmacao, defaultCase, DocumentType, FormaTr
 import { getSpreadsheetPath } from "../utils/GetSpreadsheetPath";
 import readXlsxFile from "read-excel-file/node";
 import { getDate } from "../utils/StringToDate";
-import { Gender } from "../interfaces/CaseInterface";
+import { Gender } from "../interfaces/CievsCaseInterface";
 import { LocationService } from "./LocationService";
 
 interface IRequestData {
