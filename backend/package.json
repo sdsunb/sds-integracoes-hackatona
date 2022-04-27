@@ -7,7 +7,7 @@
     "scripts": {
       "server": "ts-node-dev src/server.ts",
       "client": "npm run start --prefix ../frontend",
-      "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+      "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
       "start:prod": "ts-node-dev --respawn --transpile-only build/server.js"
     },
     "devDependencies": {
