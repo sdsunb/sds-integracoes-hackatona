@@ -35,7 +35,7 @@ export function Login() {
     useEffect(() => {
         async function getVersion() {
             const versionService = new VersionService();
-            const version = (await versionService.execute()).data;
+            const version = await versionService.execute();
             setVersion(version);
         }
 
@@ -84,7 +84,8 @@ export function Login() {
                         <form>
                             <input type="text" value={username} name="username" onChange={e => setUsername(e.target.value)} placeholder="E-mail"/>
                             <input type="password"value={password} onChange={e => setPassword(e.target.value)} name="password"  placeholder="Senha" />
-                            <form ><Button type="submit" onClick={login} >Login</Button> </form>
+                            <br />
+                            <Button type="submit" onClick={login}>Login</Button>
                         </form>
 
                     </div>

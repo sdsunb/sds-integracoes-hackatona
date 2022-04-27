@@ -169,7 +169,7 @@ export function StepOne() {
 
                             <select id="origin" value={origin} onChange={e => setOrigin(e.target.value)}>
                                 <option value="default" disabled>Escolha</option>
-                                <option value="esus">E-SUS</option>
+                                <option value="esus">E-SUS Notifica</option>
                                 <option value="cievs">CIEVS</option>
                                 <option value="sinan" disabled>SINAN (Em breve!)</option>
                                 <option value="gal" disabled>GAL (Em breve!)</option>
