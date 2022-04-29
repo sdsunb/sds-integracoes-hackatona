@@ -25,6 +25,30 @@ class LocationService {
         }
     }
 
+    async getAllUbs(token: string) {
+        this.token = '?access_token=' + token;
+
+        // The 'filter' param gets all locations where name starts with "UBS" or "GSAP".
+        const headers = {
+            'Content-Type': 'application/json;charset=UTF-8',
+            'Access-Control-Allow-Origin': "*",
+            'filter': "{\"where\": {\"or\": [{\"name\": {\"regexp\": \"/^UBS/i\"}}, {\"name\": {\"regexp\": \"/^GSAP/i\"}}] }}"
+        }
+
+        try {
+            const allUbs = await axios.get(
+                process.env.API_ADDRESS + `/locations${this.token}`,
+                { headers }
+            );
+            
+            return allUbs.data;
+            
+        } catch (error) {
+            console.log(error);
+            return error.response.data;
+        }
+    }
+
     getByName(locationName: string) {
         try {
             // Gets the location by name
