@@ -17,12 +17,11 @@ class LocationService {
                 url: apiUrl + route,
                 headers
             });
-            console.log(data.data);
+
             return data.data;
         } catch(error) {
             console.error(error);
         }
-
     }
 }
 

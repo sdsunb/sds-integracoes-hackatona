@@ -189,7 +189,6 @@ export function StepOne() {
                                 <label id="label" htmlFor="origin">Origem dos dados</label>                
                             </div>
                             
-
                             <select id="origin" value={origin} onChange={e => setOrigin(e.target.value)}>
                                 <option value="default" disabled>Escolha</option>
                                 <option value="esus">E-SUS Notifica</option>
@@ -199,36 +198,32 @@ export function StepOne() {
                             </select>
 
                         </div>
-
-
-                        {/* Selecione a UBS  */}
     
                         {                       
-                        origin=="esus" ?
-                        <div><br />
+                            origin === "esus" ?
                             <div>
-                                <label id="label" htmlFor="origin">UBS</label>
-                            </div> 
-                                <select id="ubs" value={ubsId} onChange={e => {e.preventDefault(); setUbsId(e.target.value)}}>
-                                     <option value="default" disabled>Escolha</option> 
-                                    {
-                                        locations.map((location: any,  key:number)=>{
-                                            return (
-                                                <option value={location.id} key={location.id}>{location.name}</option>
-                                                )
-                                            
-                                        })
-                                    }
+                                <br />
+                                <div>
+                                    <label id="label" htmlFor="ubs">Selecione a UBS que deseja incluir os dados</label>
+                                </div> 
+                                    <select id="ubs" value={ubsId} onChange={e => {e.preventDefault(); setUbsId(e.target.value)}}>
+                                        <option value="default" disabled>Escolha</option> 
+                                        {
+                                            locations.map((location: any,  key:number)=>{
+                                                return (
+                                                    <option value={location.id} key={location.id}>{location.name}</option>
+                                                    )
+                                                
+                                            })
+                                        }
 
-                                </select>      
-                        </div>
+                                    </select>      
+                            </div>
 
-                        :
+                            :
 
-                        <div></div>
+                            <div></div>
                         }
-
-
 
                         <div>
                             <div id="label">
@@ -237,8 +232,6 @@ export function StepOne() {
 
                             <input name="file" type="file" id="file" accept=".xls,.xlsx" onChange={e => handleSpreadsheet(e)}></input>
                         </div>
-
-                    
                         
                         <Button type="submit" onClick={goToStepTwo} >
                             Próximo Passo
@@ -248,7 +241,6 @@ export function StepOne() {
 
                     </div>
                 </div>
-                    <hr/>
 
                 <div className="content">
 
@@ -273,15 +265,12 @@ export function StepOne() {
                         <p>Se precisar de ajuda ou tiver alguma dúvida sobre o SDS Integrações, entre em contato com <a href={`mailto:${process.env.REACT_APP_RESPONSIBLE_EMAIL}`}>{process.env.REACT_APP_RESPONSIBLE}</a></p>
                     </div>
                 </div>
-            
-            
 
                 {
                     isLoading ? <div className="loader"></div> : <div></div>
                 }
                 </div>
-                
-                
+
                 <Footer />
         </Base>
     )

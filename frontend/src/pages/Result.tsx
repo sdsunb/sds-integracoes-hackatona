@@ -90,14 +90,14 @@ export function Result() {
                     
                     <p>Confira os dados detalhadamente no Go.Data</p>
                     <div className="confirm-button-container">
-                        <a target="_blank" href="https://gd.sds.unb.br" rel="noreferrer" >
+                        <a target="_blank" href={process.env.REACT_APP_GODATA_URL} rel="noreferrer" >
                             Ir para o Go.Data!
                         </a>
                     </div>
 
                     <div className="information">
                         <p>
-                            Qualquer divergência de dados ou problema com o sistema entre em contato com a equipe de desenvolvimento pelo <a href="https://github.com/sdsunb/sds-integracoes-frontend" target="_blank" rel="noreferrer">repositório do projeto.</a> 
+                            Qualquer divergência de dados ou problema com o sistema entre em contato com a equipe de desenvolvimento pelo <a href="https://github.com/sdsunb/sds-integracoes-hackatona" target="_blank" rel="noreferrer">repositório do projeto.</a> 
                         </p>
                     </div>
                     </div>
