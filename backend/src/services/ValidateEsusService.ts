@@ -159,6 +159,12 @@ class ValidateEsusService {
 
             console.log(rows);
 
+            rows.forEach((row: any, index: number) => {
+                if(!errors[index]) {
+                    validation.caseNumbers++;
+                }
+            });
+
             validation.errors = errors;
             validation.amountOfErrors = errors.length;
         });
