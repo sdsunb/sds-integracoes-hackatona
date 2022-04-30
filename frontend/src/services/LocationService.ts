@@ -1,10 +1,10 @@
 import axios from "axios";
 
-class CasesService {
-    async execute(origin: string) {
-        
+class LocationService {
+    async execute() {
+
         const apiUrl = process.env.REACT_APP_API_URL;
-        const route = `/addCases/${origin}`;
+        const route = `/location/getAllUbs`;
         const token = localStorage.getItem("token");
 
         const headers = {
@@ -13,7 +13,7 @@ class CasesService {
 
         try {
             const data = await axios({
-                method: 'post',
+                method: 'get',
                 url: apiUrl + route,
                 headers
             });
@@ -26,4 +26,4 @@ class CasesService {
     }
 }
 
-export { CasesService };
+export { LocationService };

@@ -65,14 +65,16 @@ export function StepTwo() {
     async function goToResult(e: React.ChangeEvent<any>) {
         setIsLoading(true);
         e.preventDefault();
-
+        
         const casesService = new CasesService();
         const activeOutbreakId = localStorage.getItem("activeOutbreakId");
         //alert("Aguarde enquanto a planilha é carregada e os dados são incluídos...");
-        
-        if(activeOutbreakId) {
-            const data = await casesService.execute(activeOutbreakId);
-            console.log("Result", data);
+        const origin = localStorage.getItem("origin");
+        if(origin) {
+            const data = await casesService.execute(origin);
+            console.log("data", data);
+            console.log("activeOutbreakId", activeOutbreakId);
+            console.log("data.casesAdded", data.casesAdded);
             localStorage.setItem("status", data.status);
             localStorage.setItem("casesAdded", data.casesAdded);
         }

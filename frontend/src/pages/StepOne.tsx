@@ -12,6 +12,7 @@ import { UserService } from '../services/UserService';
 import { OutbreakService } from '../services/OutbreakService';
 import { ValidateSpreadsheetService } from '../services/ValidateSpreadsheetService';
 import { Footer } from '../components/Footer';
+import { LocationService } from '../services/LocationService';
 
 interface IValidateSpreadsheetRequest {
     origin: string,
@@ -22,8 +23,10 @@ export function StepOne() {
     const history = useHistory();
 
     const [origin, setOrigin] = useState("default");
+    const [ubsId, setUbsId] = useState("default");
     const [spreadsheet, setSpreadsheet] = useState(undefined);
     const [isLoading, setIsLoading] = useState(false);
+    const [locations,setLocations ] = useState([]);
 
     /* 
      executado sempre que a pagina renderiza, pega os dados do usuario
@@ -67,8 +70,26 @@ export function StepOne() {
             }
         }
 
+
+        async function getLocation(){
+
+           const locationService = new LocationService();
+           try {
+               const locations  = await locationService.execute();
+               setLocations(locations);
+               /*  */
+               
+           } catch (error) {
+            console.error(error);
+            alert("Não foi possível buscar as informações das Localizações das UBS's");
+            history.push('/');
+           }
+
+        }
+
         getUser();
         getActiveOutbreak();
+        getLocation();
         
     }, []);
 
@@ -89,8 +110,10 @@ export function StepOne() {
     async function goToStepTwo(e: React.ChangeEvent<any>) {
         setIsLoading(true);
         e.preventDefault();
-        debugger;
+        /*  */
+        localStorage.setItem("origin", origin);
 
+        localStorage.setItem("ubsId", ubsId);
         const validateSpreadsheetService = new ValidateSpreadsheetService();
         const validateSpreadsheetRequest: IValidateSpreadsheetRequest = {
             origin: origin,
@@ -176,6 +199,36 @@ export function StepOne() {
                             </select>
 
                         </div>
+
+
+                        {/* Selecione a UBS  */}
+    
+                        {                       
+                        origin=="esus" ?
+                        <div><br />
+                            <div>
+                                <label id="label" htmlFor="origin">UBS</label>
+                            </div> 
+                                <select id="ubs" value={ubsId} onChange={e => {e.preventDefault(); setUbsId(e.target.value)}}>
+                                     <option value="default" disabled>Escolha</option> 
+                                    {
+                                        locations.map((location: any,  key:number)=>{
+                                            return (
+                                                <option value={location.id} key={location.id}>{location.name}</option>
+                                                )
+                                            
+                                        })
+                                    }
+
+                                </select>      
+                        </div>
+
+                        :
+
+                        <div></div>
+                        }
+
+
 
                         <div>
                             <div id="label">
