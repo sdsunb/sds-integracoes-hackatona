@@ -25,7 +25,7 @@ router.get("/version", versionController.handle);
 router.get("/user", ensureAuthenticated, userController.handle);
 router.get("/outbreak/:outbreakId", ensureAuthenticated, outbreakController.handle);
 router.post("/validateSpreadsheet/:origin", ensureAuthenticated, clearDirectory, uploadFile.single('file'), validateSpreadsheetController.handle);
-router.post("/addCases/:origin", ensureAuthenticated, addCasesController.handle);
+router.post("/addCases/:origin/:locationId?", ensureAuthenticated, addCasesController.handle);
 router.get("/location/getAllUbs", ensureAuthenticated, locationController.handle);
 
 export { router }

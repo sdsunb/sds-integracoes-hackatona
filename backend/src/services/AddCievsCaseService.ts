@@ -1,9 +1,8 @@
 import axios from "axios";
-import { Classification, CriterioConfirmacao, defaultCase, DocumentType, FormaTransmissao, Hospitalization, ICievsCase, OutcomeId, PregnancyStatus, RacaCor } from "../interfaces/CievsCaseInterface";
-import { getSpreadsheetPath } from "../utils/GetSpreadsheetPath";
 import readXlsxFile from "read-excel-file/node";
+import { Classification, Gender, CriterioConfirmacao, defaultCase, DocumentType, FormaTransmissao, Hospitalization, ICievsCase, OutcomeId, PregnancyStatus, RacaCor } from "../interfaces/CievsCaseInterface";
+import { getSpreadsheetPath } from "../utils/GetSpreadsheetPath";
 import { getDate } from "../utils/StringToDate";
-import { Gender } from "../interfaces/CievsCaseInterface";
 import { LocationService } from "./LocationService";
 
 interface IRequestData {
