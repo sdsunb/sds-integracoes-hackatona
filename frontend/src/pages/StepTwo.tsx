@@ -162,7 +162,7 @@ export function StepTwo() {
                     <div>
                         <h3>Sobre o Go.Data</h3>
                         <p>
-                            O <a target="_blank" href="https://worldhealthorganization.github.io/godata/">Go.Data</a> é uma um sistema de investigação de surtos para emergências de saúde pública, e inclui funcionalidades como
+                            O <a target="_blank" rel="noreferrer" href="https://worldhealthorganization.github.io/godata/">Go.Data</a> é uma um sistema de investigação de surtos para emergências de saúde pública, e inclui funcionalidades como
                             rastreamento de casos e contatos e visualização de cadeias de transmissão de determinado surto. 
                             O sistema foi desenvolvido pela OMS e é disponibilizado de forma gratuita.
                         </p>   

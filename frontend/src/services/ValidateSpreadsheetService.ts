@@ -11,16 +11,8 @@ class ValidateSpreadsheetService {
         const route = `/validateSpreadsheet/${origin}`;
         const token = localStorage.getItem('token');
 
-        const headers = {
-            "Content-type": "multipart/form-data",
-        }
-        // const headers = {
-        //     Authorization: `Bearer ${token}`
-        // }
-
         let formData = new FormData();
         formData.append("file", file);
-        console.log("FORM DATA", formData);
 
         try {
             const data = await axios.post(apiUrl + route, formData, {
@@ -29,17 +21,7 @@ class ValidateSpreadsheetService {
                     "Authorization": `Bearer ${token}`
                 }
             })
-            // const data = await axios({
-
-            //     method: 'post',
-            //     url: apiUrl + route,
-            //     headers: {
-            //         "Content-type": "multipart/form-data",
-            //         Authorization: `Bearer ${token}`
-            //     },
             
-            // });
-
             return data;
 
         } catch(error) {

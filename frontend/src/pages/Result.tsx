@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useHistory } from "react-router-dom";
-import { Button } from "../components/Button";
+import { useEffect, useState } from 'react';
 import { Base } from "./Base";
 import { Footer } from "../components/Footer";
 
 import logoSds from '../assets/images/logoSds.png';
-import logoUnb from '../assets/images/logoUnb.png';
-import logoGodata from '../assets/images/logoGodata.png'
 
 import "../styles/result.scss";
 
@@ -16,26 +12,10 @@ export function Result() {
     const [casesFail, setCasesFail] = useState(localStorage.getItem("casesFail") ? localStorage.getItem("casesFail") : "0");
 
     useEffect(() => {
-
-
         if(status !== "SUCESSO") {
             setStatus("FALHA");
         }
     })
-
-    const history = useHistory();
-
-    function goToStepOne() {
-        history.push('/stepOne');
-    }
-
-    function goToStepTwo() {
-        history.push('/stepTwo');
-    }
-
-    function goToResult() {
-        history.push('/result');
-    }
 
     return(
         <Base>
@@ -51,7 +31,6 @@ export function Result() {
                         <p>Siga o passo a passo para integrar os dados.<br/> 
                         Caso tenha alguma dúvida, consulte a <Link to="/help">área de ajuda</Link> ou entre em contato com a equipe de suporte.</p>
                     </div> */}
-
 
 {/* 
                     <div className="step-buttons">
@@ -87,7 +66,6 @@ export function Result() {
                     
                     </div>
 
-                    
                     <p>Confira os dados detalhadamente no Go.Data</p>
                     <div className="confirm-button-container">
                         <a target="_blank" href={process.env.REACT_APP_GODATA_URL} rel="noreferrer" >
