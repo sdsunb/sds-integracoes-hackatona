@@ -8,6 +8,8 @@
       "server": "ts-node-dev src/server.ts",
       "client": "npm run start --prefix ../frontend",
       "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+      "dev:debug": "ts-node-dev --transpile-only --respawn --inspect=3333 --project tsconfig.json src/server.ts",
+      "start:debug": "concurrently --kill-others-on-fail \"yarn run dev:debug\" \"npm run client\"",
       "start:prod": "ts-node-dev --respawn --transpile-only build/server.js"
     },
     "devDependencies": {
