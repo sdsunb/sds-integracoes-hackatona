@@ -4,24 +4,23 @@ class LocationService {
     token: string;
     filteredLocations: Array<any>;
 
-    async getByParentId(locationParentID: string, token: string) {
+    async setLocationsByParentId(token: string) {
         this.token = token;
 
         try {
-            // Gets all locations
-            // Perform this sending the 'filter' as request param
-            // This filter can be 'where parentLocationId is equal process.env.locationparentId' :)
-            const allLocations = await axios({
-                method: 'get',
-                url: process.env.API_ADDRESS + `/locations${token}`
-            });
+            // Gets all locations where parent location ID is setted on .env
+            const headers = {
+                'Content-Type': 'application/json;charset=UTF-8',
+                'Access-Control-Allow-Origin': "*",
+                'filter': `{\"where\": {\"parentLocationId\": \"${process.env.PARENT_LOCATION_ID}\"}}`
+            }
 
-            // Gets all locations where parent id is locationParentId
-            const filteredLocations = await allLocations.data.filter((obj) => {
-                return obj.parentLocationId === locationParentID;
-            });
-
-            this.filteredLocations = filteredLocations;
+            const filteredLocations = await axios.get(
+                process.env.API_ADDRESS + `/locations${this.token}`,
+                { headers }
+            );
+            
+            this.filteredLocations = filteredLocations.data;
         } catch (error) {
             return error.response.data;
         }

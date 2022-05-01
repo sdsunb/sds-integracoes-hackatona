@@ -186,7 +186,7 @@ class AddEsusCaseService {
 
                     // addresses
                     newCase.addresses[0].phoneNumber = col.phoneNumber;
-                    newCase.addresses[0].addressLine1 = col.bairro + col.logradouro + col.numero + col.complemento;
+                    newCase.addresses[0].addressLine1 = col.bairro + ' ' + col.logradouro + ' ' + col.numero + ' ' + col.complemento;
                     newCase.addresses[0].postalCode = col.postalCode;
 
                     newCase.addresses[0].locationId = locationId;
