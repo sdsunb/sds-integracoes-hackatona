@@ -1,6 +1,7 @@
 import axios from "axios";
 import readXlsxFile from "read-excel-file/node";
 import { ICievsCase, defaultCase, Gender, OutcomeId, Classification, DocumentType, RacaCor } from "../interfaces/CievsCaseInterface";
+import { DefaultCase } from "../interfaces/DefaultCase";
 import { getSpreadsheetPath } from "../utils/GetSpreadsheetPath";
 import { getDate } from "../utils/StringToDate";
 
@@ -10,13 +11,15 @@ interface IRequestData {
     token: string
 }
 
+enum Status {
+    success = "SUCESSO",
+    fail = "FALHA"
+}
+
 interface IResult {
-    status: string;
+    status: Status;
     casesAdded: number;
-    casesFail: {
-        quantity: number,
-        row?: number
-    };
+    errors: Array<Object>;
 }
 
 /* The schema below works in this model:
@@ -144,28 +147,29 @@ const schema = {
 }
 
 class AddEsusCaseService {
-    async execute(requestData: IRequestData, locationId: String) {
+    async execute(requestData: IRequestData, locationId: string) {
         const headers = {
             'Content-Type': 'application/json;charset=UTF-8',
             'Access-Control-Allow-Origin': "*"
         }
 
-        let newCase: ICievsCase = defaultCase;
         let requestResult: IResult = {
-            status: 'SUCESSO',
+            status: Status.success,
             casesAdded: 0,
-            casesFail: {
-                quantity:0
-            }
+            errors: []
         }
+
+        let allCases: Array<any> = [];
 
         try {
             const file = await getSpreadsheetPath();
             await readXlsxFile(file, { schema }).then(async ({rows, errors}) => {
+                let newCase = new DefaultCase();
 
-                rows.map(async (col: any) => {
+                rows.map((col: any) => {
+                    newCase = new DefaultCase();
+
                     // Basic information
-                    newCase = defaultCase;
                     // newCase.visualId = col.visualId
                     newCase.firstName = col.firstName;
                     newCase.gender = getGender(col.gender);
@@ -197,18 +201,19 @@ class AddEsusCaseService {
                     newCase.questionnaireAnswers.raca_cor[0].value = getRacaCor(col.raca_cor);
                     newCase.questionnaireAnswers.sintomas[0].value = getSintomas(col);
 
-                    try {
-                        axios.post(requestData.apiAddress + requestData.route + requestData.token, newCase, { headers });
-                        requestResult.casesAdded = requestResult.casesAdded + 1;
-                    } catch(error) {
-                        requestResult.casesFail.quantity = requestResult.casesFail.quantity + 1;
-                        console.error(error);
-                        throw new Error(error);
-                    }
-                    
+                    allCases.push(newCase);
                     // at the end of the process, clean the directory again
                 });
             });
+
+            var response = await axios.post(requestData.apiAddress + requestData.route + requestData.token, allCases, { headers });
+
+            if(response.status === 200) {
+                requestResult.casesAdded = allCases.length;
+            } else {
+                requestResult.casesAdded = 0;
+                requestResult.status = Status.fail;
+            }
     
             return requestResult;
     

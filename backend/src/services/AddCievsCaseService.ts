@@ -1,6 +1,7 @@
 import axios from "axios";
 import readXlsxFile from "read-excel-file/node";
-import { Classification, Gender, CriterioConfirmacao, defaultCase, DocumentType, FormaTransmissao, Hospitalization, ICievsCase, OutcomeId, PregnancyStatus, RacaCor } from "../interfaces/CievsCaseInterface";
+import { Classification, Gender, CriterioConfirmacao, DocumentType, FormaTransmissao, Hospitalization, OutcomeId, PregnancyStatus, RacaCor } from "../interfaces/CievsCaseInterface";
+import { DefaultCase } from "../interfaces/DefaultCase";
 import { getSpreadsheetPath } from "../utils/GetSpreadsheetPath";
 import { getDate } from "../utils/StringToDate";
 import { LocationService } from "./LocationService";
@@ -184,21 +185,21 @@ class AddCievsCaseService {
         const locationService = new LocationService();
         await locationService.setLocationsByParentId(requestData.token);
 
-        let allCases: Array<ICievsCase> = [];
-
         let requestResult: IResult = {
             status: Status.success,
             casesAdded: 0,
             errors: []
         }
 
+        let allCases: Array<any> = [];
+
         try {
             const file = await getSpreadsheetPath();
             await readXlsxFile(file, { schema }).then(async ({ rows, errors }) => {
-                let newCase: ICievsCase = defaultCase;
+                let newCase = new DefaultCase();
 
                 rows.map((col: any) => {
-                    newCase = defaultCase;
+                    newCase = new DefaultCase();
 
                     // Basic information
                     newCase.visualId = col.visualId;
@@ -280,13 +281,12 @@ class AddCievsCaseService {
             });
 
             var response = await axios.post(requestData.apiAddress + requestData.route + requestData.token, allCases, { headers });
-            console.log(response);
+
             if(response.status === 200) {
                 requestResult.casesAdded = allCases.length;
             } else {
                 requestResult.casesAdded = 0;
                 requestResult.status = Status.fail
-                console.log("Deu ruim", requestResult);
             }
 
             return requestResult;
