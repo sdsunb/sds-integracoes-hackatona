@@ -9,6 +9,8 @@ class LocationService {
 
         try {
             // Gets all locations
+            // Perform this sending the 'filter' as request param
+            // This filter can be 'where parentLocationId is equal process.env.locationparentId' :)
             const allLocations = await axios({
                 method: 'get',
                 url: process.env.API_ADDRESS + `/locations${token}`
@@ -55,8 +57,9 @@ class LocationService {
             const location: any = this.filteredLocations.filter((obj) => {
                 return obj.name === locationName;
             })[0];
-    
+
             if(location === undefined) {
+                console.log("Não foi possível buscar os dados do local do caso.");
                 return '';
             } else {
                 return location.id;

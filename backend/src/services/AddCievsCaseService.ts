@@ -67,7 +67,7 @@ const schema = {
         type: String
     },
     'RA': {
-        prop: 'locationId',
+        prop: 'locationName',
         type: String
     },
     'enderecoCompleto': {
@@ -231,8 +231,9 @@ class AddCievsCaseService {
                     newCase.addresses[0].phoneNumber = col.phoneNumber;
                     newCase.addresses[0].addressLine1 = col.addressLine1;
                     newCase.addresses[0].postalCode = col.postalCode;
-                    newCase.addresses[0].locationId = locationService.getByName(col.locationId);
-                    
+
+                    newCase.addresses[0].locationId = locationService.getByName(col.locationName);
+
                     // Date Ranges: Hospitalization/Isolation
                     newCase.dateRanges = [];
                     if(col.quarentena === 'Residência') {
@@ -273,7 +274,6 @@ class AddCievsCaseService {
 
                     try {
                         var response = await axios.post(requestData.apiAddress + requestData.route + requestData.token, newCase, { headers });
-                        console.log(response);
                         requestResult.casesAdded += 1;
                     } catch(error) {
                         console.log("Deu ruim", requestResult);
