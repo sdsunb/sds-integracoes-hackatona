@@ -1,6 +1,6 @@
 import axios from "axios";
 import readXlsxFile from "read-excel-file/node";
-import { ICievsCase, defaultCase, Gender, OutcomeId, Classification, DocumentType } from "../interfaces/CievsCaseInterface";
+import { ICievsCase, defaultCase, Gender, OutcomeId, Classification, DocumentType, RacaCor } from "../interfaces/CievsCaseInterface";
 import { getSpreadsheetPath } from "../utils/GetSpreadsheetPath";
 import { getDate } from "../utils/StringToDate";
 
@@ -193,11 +193,11 @@ class AddEsusCaseService {
                     newCase.dateOfOutcome = getDate(col.dateOfOutcome);
 
                     // Questionnaire Answers
-                    // newCase.questionnaireAnswers.cns[0].value = col[37];
-                    // newCase.questionnaireAnswers.raca_cor[0].value = col[28];
-    
+                    newCase.questionnaireAnswers.cns[0].value = col.cns;
+                    newCase.questionnaireAnswers.raca_cor[0].value = getRacaCor(col.raca_cor);
+                    newCase.questionnaireAnswers.sintomas[0].value = getSintomas(col);
+
                     try {
-                        console.log("adding", newCase);
                         axios.post(requestData.apiAddress + requestData.route + requestData.token, newCase, { headers });
                         requestResult.casesAdded = requestResult.casesAdded + 1;
                     } catch(error) {
@@ -229,6 +229,24 @@ function getGender(gender: string) {
     }
 }
 
+function getRacaCor(racaCor: string) {
+    if(racaCor === 'Branca') {
+        return RacaCor.Branca;
+    } else if(racaCor === 'Preta') {
+        return RacaCor.Preta;
+    } else if(racaCor === 'Amarela') { 
+        return RacaCor.Amarela;
+    } else if(racaCor === 'Parda') {
+        return RacaCor.Parda;
+    } else if(racaCor === 'Indígena') {
+        return RacaCor.Indigena;
+    } else if(racaCor === 'Sem declaração') {
+        return RacaCor.SemDeclaracao;
+    } else { 
+        return RacaCor.Empty;
+    }
+}
+
 function getOutcome(outcome: string) {
     if(outcome === 'Cura') {
         return OutcomeId.Recovered;
@@ -255,6 +273,52 @@ function getClassification(classification: string) {
     } else {
         return Classification.Suspect;
     }
+}
+
+function getSintomas(row) {
+    console.log(row);
+    let sintomas: Array<string> = [];
+    if(row.dorDeGarganta === 'Sim') {
+        sintomas.push("1");
+    }
+
+    if(row.dispneia === 'Sim') {
+        sintomas.push("2");
+    }
+
+    if(row.febre === 'Sim') {
+        sintomas.push("3");
+    }
+
+    if(row.tosse === 'Sim') {
+        sintomas.push("4");
+    }
+
+    if(row.outros === 'Sim') {
+        sintomas.push("5");
+    }
+
+    if(row.dorDecabeca === 'Sim') {
+        sintomas.push("6");
+    }
+
+    if(row.disturbiosGustativos === 'Sim') {
+        sintomas.push("7");
+    }
+
+    if(row.disturbiosOlfativos === 'Sim') {
+        sintomas.push("8");
+    }
+
+    if(row.coriza === 'Sim') {
+        sintomas.push("9");
+    }
+
+    if(row.assintomatico === 'Sim') {
+        sintomas.push("10");
+    }
+
+    return sintomas;
 }
 
 export { AddEsusCaseService };

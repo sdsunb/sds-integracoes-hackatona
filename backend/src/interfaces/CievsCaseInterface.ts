@@ -62,7 +62,7 @@ export enum Hospitalization {
 
 interface DocumentObject {
     type: DocumentType,
-    number: String      // It's funny, but its serious. The "number" attribute can be filled with anything (string).
+    number: String
 }
 
 export interface ICievsCase {
@@ -85,7 +85,9 @@ export interface ICievsCase {
         raca_cor?: Array<any>,
         profissao?: Array<any>,
         nome_da_mae?: Array<any>,
-        qual?: Array<any>
+        qual?: Array<any>,
+        cns?: Array<any>
+        sintomas?: Array<any>
     },
     vaccinesReceived: Array<any>,
     pregnancyStatus: PregnancyStatus,
@@ -191,8 +193,17 @@ export let defaultCase: ICievsCase = {
             {
                 value: []
             }
+        ],
+        cns: [
+            {
+                value: ""
+            }
+        ],
+        sintomas: [
+            {
+                value: []
+            }
         ]
-
     },
     vaccinesReceived: [],
     pregnancyStatus: PregnancyStatus.None,
