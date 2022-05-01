@@ -11,13 +11,15 @@ interface IRequestData {
     token: string
 }
 
+enum Status {
+    success = "SUCESSO",
+    fail = "FALHA"
+}
+
 interface IResult {
-    status: string;
+    status: Status;
     casesAdded: number;
-    casesFail: {
-        quantity: number,
-        row?: number
-    };
+    errors: Array<Object>;
 }
 
 /* The schema below works in this model:
@@ -180,24 +182,25 @@ class AddCievsCaseService {
         }
 
         const locationService = new LocationService();
-        await locationService.getByParentId(process.env.PARENT_LOCATION_ID, requestData.token);
+        await locationService.setLocationsByParentId(requestData.token);
 
-        let newCase: ICievsCase = defaultCase;
+        let allCases: Array<ICievsCase> = [];
+
         let requestResult: IResult = {
-            status: 'SUCESSO',
+            status: Status.success,
             casesAdded: 0,
-            casesFail: {
-                quantity:0
-            }
+            errors: []
         }
 
         try {
             const file = await getSpreadsheetPath();
             await readXlsxFile(file, { schema }).then(async ({ rows, errors }) => {
+                let newCase: ICievsCase = defaultCase;
 
-                await rows.map(async (col: any) => {
-                    // Basic information
+                rows.map((col: any) => {
                     newCase = defaultCase;
+
+                    // Basic information
                     newCase.visualId = col.visualId;
                     newCase.firstName = col.firstName;
                     newCase.gender = getGender(col.gender);
@@ -227,7 +230,7 @@ class AddCievsCaseService {
                     // Classification in cievs ALWAYS is CONFIRMED by default
                     // newCase.classification = getClassification(col.classification);
                     
-                    // addresses
+                    // Addresses
                     newCase.addresses[0].phoneNumber = col.phoneNumber;
                     newCase.addresses[0].addressLine1 = col.addressLine1;
                     newCase.addresses[0].postalCode = col.postalCode;
@@ -272,19 +275,21 @@ class AddCievsCaseService {
                         newCase.questionnaireAnswers.comorbidades[0].value = "2"    // "2" is the value to "Não" in questionnaire answers
                     }
 
-                    try {
-                        var response = await axios.post(requestData.apiAddress + requestData.route + requestData.token, newCase, { headers });
-                        requestResult.casesAdded += 1;
-                    } catch(error) {
-                        console.log("Deu ruim", requestResult);
-                        requestResult.casesFail.quantity += 1;
-                        console.error(error);
-                        throw new Error(error);
-                    }
+                    allCases.push(newCase);
                 });
             });
 
-            return newCase;
+            var response = await axios.post(requestData.apiAddress + requestData.route + requestData.token, allCases, { headers });
+            console.log(response);
+            if(response.status === 200) {
+                requestResult.casesAdded = allCases.length;
+            } else {
+                requestResult.casesAdded = 0;
+                requestResult.status = Status.fail
+                console.log("Deu ruim", requestResult);
+            }
+
+            return requestResult;
 
         } catch(error) {
             console.log(error);
