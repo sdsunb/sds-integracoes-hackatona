@@ -112,8 +112,7 @@ export function StepTwo() {
                         <Button onClick={goToStepTwo}>Passo 2</Button>
                         <Button disabled >Resultado</Button>
                     </div>
-
-                    <h2>Passo 2</h2>
+                    <br />
                     <p>Conferir a entrada de dados</p>
                     
                     <div className="data-input">
@@ -152,9 +151,9 @@ export function StepTwo() {
                 <div className="content">
 
                     <div>
-                        <h3>Sobre o SDS Integrações</h3>
+                        <h3> Sobre a Interface Sirius</h3>
                         <p>
-                            O SDS Integrações tem como principal objetivo incluir planilhas de casos do e-SUS e CIEVS diretamente no Go.Data
+                            A Interface Sirius tem como principal objetivo incluir planilhas de casos do e-SUS e CIEVS diretamente no Go.Data
                             com a proposta de melhorar a qualidade de vida e trabalho do profissional de saúde.
                         </p>                        
                     </div>
@@ -167,9 +166,9 @@ export function StepTwo() {
                             O sistema foi desenvolvido pela OMS e é disponibilizado de forma gratuita.
                         </p>   
 
-                        <p className="warning">AVISO: Utilizando o SDS Integrações você está inserindo dados no banco de casos do DF.</p>
+                        <p className="warning">AVISO: Utilizando a Interface Sirius você está inserindo dados no banco de casos do DF.</p>
 
-                        <p>Se precisar de ajuda ou tiver alguma dúvida sobre o SDS Integrações, entre em contato com <a href={`mailto:${process.env.REACT_APP_RESPONSIBLE_EMAIL}`}>{process.env.REACT_APP_RESPONSIBLE}</a></p>
+                        <p>Se precisar de ajuda ou tiver alguma dúvida sobre a Interface Sirius, entre em contato com <a href={`mailto:${process.env.REACT_APP_RESPONSIBLE_EMAIL}`}>{process.env.REACT_APP_RESPONSIBLE}</a></p>
                     </div>
                 </div>
      
