@@ -4,8 +4,6 @@ import { Button } from "../components/Button";
 import { Base } from "./Base";
 
 import logoSds from '../assets/images/logoSds.png';
-import logoUnb from '../assets/images/logoUnb.png';
-import logoGodata from '../assets/images/logoGodata.png'
 
 import "../styles/stepOne.scss";
 import { UserService } from '../services/UserService';
@@ -26,7 +24,7 @@ export function StepOne() {
     const [ubsId, setUbsId] = useState("default");
     const [spreadsheet, setSpreadsheet] = useState(undefined);
     const [isLoading, setIsLoading] = useState(false);
-    const [locations,setLocations ] = useState([]);
+    const [locations, setLocations ] = useState([]);
 
     /* 
      executado sempre que a pagina renderiza, pega os dados do usuario
@@ -104,57 +102,73 @@ export function StepOne() {
 
 
     /* 
-     method - go page two
+        Method - Validate spreadsheet and go to page two
     */
-
     async function goToStepTwo(e: React.ChangeEvent<any>) {
         setIsLoading(true);
         e.preventDefault();
-        /*  */
-        localStorage.setItem("origin", origin);
 
+        localStorage.setItem("origin", origin);
         localStorage.setItem("ubsId", ubsId);
+        
         const validateSpreadsheetService = new ValidateSpreadsheetService();
         const validateSpreadsheetRequest: IValidateSpreadsheetRequest = {
             origin: origin,
             file: spreadsheet
         }
 
-        try {
-            //alert("Aguarde enquanto a planilha é validada...");
-            const validateSpreadsheet = await validateSpreadsheetService.execute(validateSpreadsheetRequest);
-            console.log("VALIDATE SPREAD", validateSpreadsheet?.data);
-    
+        const emptyFields = hasEmptyFields();
+        if(emptyFields) {
+            alert("Preencha todos os campos");
+        
+        } else {
+            try {
+                const validateSpreadsheet = await validateSpreadsheetService.execute(validateSpreadsheetRequest);
 
-            if(validateSpreadsheet?.data.errors.length !== 0) {
-                console.log("\n------ Erros da planilha ------", validateSpreadsheet?.data.errors, "\n");
-                alert("A planilha possui erros, consulte os logs do navegador (pressionando 'F12' e clicando na aba CONSOLE) para mais informações.")
-            } else {
-                localStorage.setItem("caseNumbers", validateSpreadsheet.data.caseNumbers);
-                history.push('/stepTwo');
+                console.log("Validate Spreadsheet", validateSpreadsheet);
+                // Spreadsheet type error validation:
+                if(validateSpreadsheet?.data.error) {
+                    alert(validateSpreadsheet?.data.error);
+        
+                // Spreadsheet fields error validation:
+                } else if(validateSpreadsheet?.data.errors.length !== 0) {  // ver se ele realmente retorna esse "errors"
+                    alert("A planilha possui erros. Verifique-a e tente novamente");
+                    console.log("\n------ Erros da planilha ------", validateSpreadsheet?.data.errors, "\n");
+        
+                // In this case, doesn't exist errors on validation.
+                } else {
+                    localStorage.setItem("caseNumbers", validateSpreadsheet.data.caseNumbers);
+                    setIsLoading(false);
+                    history.push('/stepTwo');
+                }
+            } catch(error) {
+                setIsLoading(false);
+                console.error(error);
             }
-            setIsLoading(false);
-        } catch(error) {
-            setIsLoading(false);
-            console.error(error);
         }
+        setIsLoading(false);
+    }
+
+    // This function check if exists empty fields and return true if positive.
+    function hasEmptyFields() {
+        if(!origin || origin === 'default' || !spreadsheet) {
+            return true;
+        } else if(origin === 'esus') {
+            // If origin is equal 'esus', is necessary validate 'ubsId' too.
+            if(!ubsId || ubsId === 'default') {
+                return true;
+            }
+        }
+        return false
     }
 
     /* 
     method 
     */
-
     function handleSpreadsheet(e: any) {
         setSpreadsheet(e.target.files[0]);
     }
 
-
-
-
-
-
-
-    
     return(
         <Base>
             <div id="step-one">
@@ -255,7 +269,7 @@ export function StepOne() {
                     <div>
                         <h3>Sobre o Go.Data</h3>
                         <p>
-                            O <a target="_blank" href="https://worldhealthorganization.github.io/godata/">Go.Data</a> é uma um sistema de investigação de surtos para emergências de saúde pública, e inclui funcionalidades como
+                            O <a target="_blank" rel="noreferrer" href="https://worldhealthorganization.github.io/godata/">Go.Data</a> é uma um sistema de investigação de surtos para emergências de saúde pública, e inclui funcionalidades como
                             rastreamento de casos e contatos e visualização de cadeias de transmissão de determinado surto. 
                             O sistema foi desenvolvido pela OMS e é disponibilizado de forma gratuita.
                         </p>   
