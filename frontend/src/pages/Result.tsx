@@ -20,7 +20,7 @@ export function Result() {
     return(
         <Base>
             <div id="result">
-            <div className="border">
+                <div className="border">
 
                 <div className="content">
                     <div className="header">

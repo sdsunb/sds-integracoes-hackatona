@@ -68,8 +68,8 @@ export function StepTwo() {
         
         const casesService = new CasesService();
         const activeOutbreakId = localStorage.getItem("activeOutbreakId");
-        //alert("Aguarde enquanto a planilha é carregada e os dados são incluídos...");
         const origin = localStorage.getItem("origin");
+
         if(origin) {
             const data = await casesService.execute(origin);
             console.log("data", data);
@@ -105,7 +105,7 @@ export function StepTwo() {
 
                     <div className="information">
                         <p>Siga o passo a passo para integrar os dados.<br/> 
-                        Caso tenha alguma dúvida, consulte a <Link to="/help">área de ajuda</Link> ou entre em contato com a equipe de suporte.</p>
+                        Caso tenha alguma dúvida, consulte o <a target="_blank" rel="noreferrer" href="https://github.com/sdsunb/sds-integracoes-hackatona">repositório do projeto</a> ou entre em contato com a equipe de suporte.</p>
                     </div>
 
                     <div className="step-buttons">
@@ -146,36 +146,34 @@ export function StepTwo() {
 
                 </div>
             </div>
-                    <hr />
-
                     
-                <div className="content">
+            <div className="content">
 
-                    <div>
-                        <h3> Sobre a Interface Sirius</h3>
-                        <p>
-                            A Interface Sirius tem como principal objetivo incluir planilhas de casos do e-SUS e CIEVS diretamente no Go.Data
-                            com a proposta de melhorar a qualidade de vida e trabalho do profissional de saúde.
-                        </p>                        
-                    </div>
-
-                    <div>
-                        <h3>Sobre o Go.Data</h3>
-                        <p>
-                            O <a target="_blank" rel="noreferrer" href="https://worldhealthorganization.github.io/godata/">Go.Data</a> é uma um sistema de investigação de surtos para emergências de saúde pública, e inclui funcionalidades como
-                            rastreamento de casos e contatos e visualização de cadeias de transmissão de determinado surto. 
-                            O sistema foi desenvolvido pela OMS e é disponibilizado de forma gratuita.
-                        </p>   
-
-                        <p className="warning">AVISO: Utilizando a Interface Sirius você está inserindo dados no banco de casos do DF.</p>
-
-                        <p>Se precisar de ajuda ou tiver alguma dúvida sobre a Interface Sirius, entre em contato com <a href={`mailto:${process.env.REACT_APP_RESPONSIBLE_EMAIL}`}>{process.env.REACT_APP_RESPONSIBLE}</a></p>
-                    </div>
+                <div>
+                    <h3> Sobre a Interface Sirius</h3>
+                    <p>
+                        A Interface Sirius tem como principal objetivo incluir planilhas de casos do e-SUS e CIEVS diretamente no Go.Data
+                        com a proposta de melhorar a qualidade de vida e trabalho do profissional de saúde.
+                    </p>                        
                 </div>
-     
-                {
-                    isLoading ? <div className="loader"></div> : <div></div>
-                }
+
+                <div>
+                    <h3>Sobre o Go.Data</h3>
+                    <p>
+                        O <a target="_blank" rel="noreferrer" href="https://worldhealthorganization.github.io/godata/">Go.Data</a> é uma um sistema de investigação de surtos para emergências de saúde pública, e inclui funcionalidades como
+                        rastreamento de casos e contatos e visualização de cadeias de transmissão de determinado surto. 
+                        O sistema foi desenvolvido pela OMS e é disponibilizado de forma gratuita.
+                    </p>   
+
+                    <p className="warning">AVISO: Utilizando a Interface Sirius você está inserindo dados no banco de casos do DF.</p>
+
+                    <p>Se precisar de ajuda ou tiver alguma dúvida sobre a Interface Sirius, entre em contato com <a href={`mailto:${process.env.REACT_APP_RESPONSIBLE_EMAIL}`}>{process.env.REACT_APP_RESPONSIBLE}</a></p>
+                </div>
+            </div>
+    
+            {
+                isLoading ? <div className="loader"></div> : <div></div>
+            }
 
             </div>
 

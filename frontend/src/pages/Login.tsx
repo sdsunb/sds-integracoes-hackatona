@@ -14,16 +14,6 @@ import '../styles/login.scss';
 import '../styles/button.scss';
 import { useEffect } from 'react';
 
-
-// interface ILogin {
-//     username: string;
-//     password: string;
-// }
-
-// type ContextType = {
-
-// }
-
 export function Login() {
     const history = useHistory();
 
@@ -60,7 +50,6 @@ export function Login() {
         setIsLoading(false);
     }
 
-
     return(
         <Base>
             <div id="page-login">
@@ -88,7 +77,6 @@ export function Login() {
 
                     </div>
                 </div>
-             
             </div>
                 
                 <hr />
@@ -120,20 +108,13 @@ export function Login() {
                     <p>Versão 1.0.0</p>
                     <p>{version ? `Versão do Go.Data ${version}` : ""} </p>
                 </div>
-                
-                   
+
                 {
                     isLoading ? <div className="loader"></div> : <div></div>
                 }
 
-
-
-
             </div>
-                
-
             <Footer />
         </Base>
-        
     )
 }
