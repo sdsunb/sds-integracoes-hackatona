@@ -1,5 +1,4 @@
 import readXlsxFile from "read-excel-file/node";
-import { Classification, PregnancyStatus } from "../interfaces/CaseInterface";
 
 interface IValidation {
     caseNumbers: number;
@@ -150,7 +149,7 @@ const schema = {
     }
 }
 
-class CievsValidateService {
+class ValidateCievsService {
     // The Dictionary from this business rule is found in the spreadsheet
     async execute(filePath: string) {
 
@@ -200,10 +199,9 @@ class CievsValidateService {
             validation.amountOfErrors = errors.length;
         });
         
-
         return validation;
     }
 
 }
 
-export { CievsValidateService };
+export { ValidateCievsService };

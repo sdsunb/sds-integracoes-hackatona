@@ -11,9 +11,17 @@ class AddCasesController {
             const origin = request.params.origin;
 
             const addCasesService = new AddCasesService();
-            const result = await addCasesService.execute(process.env.OUTBREAK_ID, authToken, origin);
 
-            return response.json(result);
+            if(request.params.locationId) {
+                // Esus
+                const locationId = request.params.locationId;
+                const result = await addCasesService.execute(process.env.OUTBREAK_ID, authToken, origin, locationId);
+                return response.json(result);
+            } else {
+                // Cievs
+                const result = await addCasesService.execute(process.env.OUTBREAK_ID, authToken, origin);
+                return response.json(result);
+            }
 
         } catch(error) {
             console.log(error);

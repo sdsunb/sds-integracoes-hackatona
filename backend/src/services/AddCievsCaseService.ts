@@ -1,9 +1,9 @@
 import axios from "axios";
-import { Classification, CriterioConfirmacao, defaultCase, DocumentType, FormaTransmissao, Hospitalization, ICievsCase, OutcomeId, PregnancyStatus, RacaCor } from "../interfaces/CievsCaseInterface";
-import { getSpreadsheetPath } from "../utils/GetSpreadsheetPath";
 import readXlsxFile from "read-excel-file/node";
+import { Classification, Gender, CriterioConfirmacao, DocumentType, FormaTransmissao, Hospitalization, OutcomeId, PregnancyStatus, RacaCor } from "../interfaces/CievsCaseInterface";
+import { DefaultCase } from "../interfaces/DefaultCase";
+import { getSpreadsheetPath } from "../utils/GetSpreadsheetPath";
 import { getDate } from "../utils/StringToDate";
-import { Gender } from "../interfaces/CaseInterface";
 import { LocationService } from "./LocationService";
 
 interface IRequestData {
@@ -12,13 +12,15 @@ interface IRequestData {
     token: string
 }
 
+enum Status {
+    success = "SUCESSO",
+    fail = "FALHA"
+}
+
 interface IResult {
-    status: string;
+    status: Status;
     casesAdded: number;
-    casesFail: {
-        quantity: number,
-        row?: number
-    };
+    errors: Array<Object>;
 }
 
 /* The schema below works in this model:
@@ -68,7 +70,7 @@ const schema = {
         type: String
     },
     'RA': {
-        prop: 'locationId',
+        prop: 'locationName',
         type: String
     },
     'enderecoCompleto': {
@@ -181,24 +183,25 @@ class AddCievsCaseService {
         }
 
         const locationService = new LocationService();
-        await locationService.getByParentId(process.env.PARENT_LOCATION_ID, requestData.token);
+        await locationService.setLocationsByParentId(requestData.token);
 
-        let newCase: ICievsCase = defaultCase;
         let requestResult: IResult = {
-            status: 'SUCESSO',
+            status: Status.success,
             casesAdded: 0,
-            casesFail: {
-                quantity:0
-            }
+            errors: []
         }
+
+        let allCases: Array<any> = [];
 
         try {
             const file = await getSpreadsheetPath();
             await readXlsxFile(file, { schema }).then(async ({ rows, errors }) => {
+                let newCase = new DefaultCase();
 
-                await rows.map(async (col: any) => {
+                rows.map((col: any) => {
+                    newCase = new DefaultCase();
+
                     // Basic information
-                    newCase = defaultCase;
                     newCase.visualId = col.visualId;
                     newCase.firstName = col.firstName;
                     newCase.gender = getGender(col.gender);
@@ -228,12 +231,13 @@ class AddCievsCaseService {
                     // Classification in cievs ALWAYS is CONFIRMED by default
                     // newCase.classification = getClassification(col.classification);
                     
-                    // addresses
+                    // Addresses
                     newCase.addresses[0].phoneNumber = col.phoneNumber;
                     newCase.addresses[0].addressLine1 = col.addressLine1;
                     newCase.addresses[0].postalCode = col.postalCode;
-                    newCase.addresses[0].locationId = locationService.getByName(col.locationId);
-                    
+
+                    newCase.addresses[0].locationId = locationService.getByName(col.locationName);
+
                     // Date Ranges: Hospitalization/Isolation
                     newCase.dateRanges = [];
                     if(col.quarentena === 'Residência') {
@@ -272,20 +276,20 @@ class AddCievsCaseService {
                         newCase.questionnaireAnswers.comorbidades[0].value = "2"    // "2" is the value to "Não" in questionnaire answers
                     }
 
-                    try {
-                        var response = await axios.post(requestData.apiAddress + requestData.route + requestData.token, newCase, { headers });
-                        console.log(response);
-                        requestResult.casesAdded += 1;
-                    } catch(error) {
-                        console.log("Deu ruim", requestResult);
-                        requestResult.casesFail.quantity += 1;
-                        console.error(error);
-                        throw new Error(error);
-                    }
+                    allCases.push(newCase);
                 });
             });
 
-            return newCase;
+            var response = await axios.post(requestData.apiAddress + requestData.route + requestData.token, allCases, { headers });
+
+            if(response.status === 200) {
+                requestResult.casesAdded = allCases.length;
+            } else {
+                requestResult.casesAdded = 0;
+                requestResult.status = Status.fail
+            }
+
+            return requestResult;
 
         } catch(error) {
             console.log(error);

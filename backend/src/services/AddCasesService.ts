@@ -1,8 +1,8 @@
-import { AddEsusCaseService } from "./AddEsusCaseService";
 import { AddCievsCaseService } from "./AddCievsCaseService";
+import { AddEsusCaseService } from "./AddEsusCaseService";
 
 class AddCasesService {
-    async execute(outbreakId: string, authToken: string, origin: string) {
+    async execute(outbreakId: string, authToken: string, origin: string, locationId?: string) {
         
         const requestData = {
             apiAddress: process.env.API_ADDRESS,
@@ -12,12 +12,13 @@ class AddCasesService {
 
         let response: Object;
 
-        if(origin === 'esus') {
-            const addEsusCaseService = new AddEsusCaseService();
-            response = await addEsusCaseService.execute(requestData);
-        } else if(origin === 'cievs') {
+        if(origin === 'cievs') {
             const addCievsCaseService = new AddCievsCaseService();
             response = await addCievsCaseService.execute(requestData);
+        } 
+        else if(origin === 'esus') {
+            const addEsusCaseService = new AddEsusCaseService();
+            response = await addEsusCaseService.execute(requestData, locationId);
         }
         
         return response;

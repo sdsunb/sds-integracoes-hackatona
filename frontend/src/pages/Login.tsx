@@ -35,7 +35,7 @@ export function Login() {
     useEffect(() => {
         async function getVersion() {
             const versionService = new VersionService();
-            const version = (await versionService.execute()).data;
+            const version = await versionService.execute();
             setVersion(version);
         }
 
@@ -72,11 +72,9 @@ export function Login() {
                    */}
                     <div className="header">
                         <img src={logoSds} className="img-logo" width="440" height="170" alt="Logo da Sala de Situação da Universidade de Brasília (FS)" />
-                        <h1>BEM-VINDO AO SDS INTEGRAÇÕES</h1>
+                        <h1>BEM-VINDO(A) AO SIRIUS</h1>
                     </div>
                     
-
-
                     <div>
                         <h2>Área restrita</h2>
                         <p> Acesse com suas credenciais do Go.Data ou entre em contato com a <a href="https://sds.unb.br/" target="_blank" rel="noreferrer">Sala de Situação</a> da Universidade de Brasília para mais informações</p>
@@ -84,7 +82,8 @@ export function Login() {
                         <form>
                             <input type="text" value={username} name="username" onChange={e => setUsername(e.target.value)} placeholder="E-mail"/>
                             <input type="password"value={password} onChange={e => setPassword(e.target.value)} name="password"  placeholder="Senha" />
-                            <form ><Button type="submit" onClick={login} >Login</Button> </form>
+                            <br />
+                            <Button type="submit" onClick={login}>Login</Button>
                         </form>
 
                     </div>
@@ -96,9 +95,9 @@ export function Login() {
                 
                 <div className="content">
                     <div>
-                        <h3>Sobre o SDS Integrações</h3>
+                        <h3> Sobre a Interface Sirius</h3>
                         <p>
-                            O SDS Integrações tem como principal objetivo incluir planilhas de casos do e-SUS e CIEVS diretamente no Go.Data
+                            A Interface Sirius tem como principal objetivo incluir planilhas de casos do e-SUS e CIEVS diretamente no Go.Data
                             com a proposta de melhorar a qualidade de vida e trabalho do profissional de saúde.
                         </p>                        
                     </div>
@@ -106,14 +105,14 @@ export function Login() {
                     <div>
                         <h3>Sobre o Go.Data</h3>
                         <p>
-                            O <a target="_blank" href="https://worldhealthorganization.github.io/godata/">Go.Data</a> é uma um sistema de investigação de surtos para emergências de saúde pública, e inclui funcionalidades como
+                            O <a target="_blank" rel="noreferrer" href="https://worldhealthorganization.github.io/godata/">Go.Data</a> é uma um sistema de investigação de surtos para emergências de saúde pública, e inclui funcionalidades como
                             rastreamento de casos e contatos e visualização de cadeias de transmissão de determinado surto. 
                             O sistema foi desenvolvido pela OMS e é disponibilizado de forma gratuita.
                         </p>   
 
-                        <p className="warning">AVISO: Utilizando o SDS Integrações você está inserindo dados no banco de casos do DF.</p>
+                        <p className="warning">AVISO: Utilizando a Interface Sirius você está inserindo dados no banco de casos do DF.</p>
 
-                        <p>Se precisar de ajuda ou tiver alguma dúvida sobre o SDS Integrações, entre em contato com <a href={`mailto:${process.env.REACT_APP_RESPONSIBLE_EMAIL}`}>{process.env.REACT_APP_RESPONSIBLE}</a></p>
+                        <p>Se precisar de ajuda ou tiver alguma dúvida sobre a Interface Sirius, entre em contato com <a href={`mailto:${process.env.REACT_APP_RESPONSIBLE_EMAIL}`}>{process.env.REACT_APP_RESPONSIBLE}</a></p>
                     </div>
                 </div>
 

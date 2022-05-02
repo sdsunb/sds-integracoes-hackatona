@@ -10,7 +10,7 @@ class VersionService {
             url: environment + route,
         });
 
-        return version;
+        return version.data;
     }
 }
 
