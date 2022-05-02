@@ -61,7 +61,7 @@ export function Result() {
 
                         <div className="data-content">
                             <p>Quantidade de falhas</p>
-                            <p className="data">0</p>
+                            <p className="data">{errors}</p>
                         </div>
                     
                     </div>
