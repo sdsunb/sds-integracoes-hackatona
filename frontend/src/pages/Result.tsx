@@ -9,7 +9,7 @@ import "../styles/result.scss";
 export function Result() {
     const [casesAdded, setCasesAdded] = useState(localStorage.getItem("casesAdded") ? localStorage.getItem("casesAdded") : "0");
     const [status, setStatus] = useState(localStorage.getItem("status"));
-    const [casesFail, setCasesFail] = useState(localStorage.getItem("casesFail") ? localStorage.getItem("casesFail") : "0");
+    const [errors, setErrors] = useState(localStorage.getItem("errors") ? localStorage.getItem("errors") : "0");
 
     useEffect(() => {
         if(status !== "SUCESSO") {

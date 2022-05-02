@@ -72,11 +72,9 @@ export function Login() {
                    */}
                     <div className="header">
                         <img src={logoSds} className="img-logo" width="440" height="170" alt="Logo da Sala de Situação da Universidade de Brasília (FS)" />
-                        <h1>BEM-VINDO a Interface Sirius</h1>
+                        <h1>BEM-VINDO(A) AO SIRIUS</h1>
                     </div>
                     
-
-
                     <div>
                         <h2>Área restrita</h2>
                         <p> Acesse com suas credenciais do Go.Data ou entre em contato com a <a href="https://sds.unb.br/" target="_blank" rel="noreferrer">Sala de Situação</a> da Universidade de Brasília para mais informações</p>

@@ -77,6 +77,7 @@ export function StepTwo() {
             console.log("data.casesAdded", data.casesAdded);
             localStorage.setItem("status", data.status);
             localStorage.setItem("casesAdded", data.casesAdded);
+            localStorage.setItem("errors", data.errors.length);
         }
 
         history.push('/result');
