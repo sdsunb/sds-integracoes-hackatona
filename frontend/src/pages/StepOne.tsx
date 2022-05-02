@@ -125,7 +125,6 @@ export function StepOne() {
             try {
                 const validateSpreadsheet = await validateSpreadsheetService.execute(validateSpreadsheetRequest);
 
-                console.log("Validate Spreadsheet", validateSpreadsheet);
                 // Spreadsheet type error validation:
                 if(validateSpreadsheet?.data.error) {
                     alert(validateSpreadsheet?.data.error);
@@ -185,16 +184,14 @@ export function StepOne() {
                         <h2>Siga o passo a passo para integrar os dados.</h2> 
                     
                     <div className="information">
-                        <p> Caso tenha alguma dúvida, consulte a <Link to="/help">área de ajuda</Link> ou entre em contato com a equipe de suporte.</p>
+                        <p> Caso tenha alguma dúvida, consulte o <a target="_blank" rel="noreferrer" href="https://github.com/sdsunb/sds-integracoes-hackatona">repositório do projeto</a> ou entre em contato com a equipe de suporte.</p>
                     </div>
+
                     <div className="step-buttons">
                         <Button onClick={goToStepOne}>Passo 1</Button>
                         <Button disabled >Passo 2</Button>
                         <Button disabled >Resultado</Button>
                     </div>
-
-
-                    <h2></h2>
                     
                     <form id="form" encType="multipart/form-data">
                     
@@ -257,7 +254,6 @@ export function StepOne() {
                 </div>
 
                 <div className="content">
-
                     <div>
                         <h3> Sobre a Interface Sirius</h3>
                         <p>

@@ -20,7 +20,7 @@ export function Result() {
     return(
         <Base>
             <div id="result">
-            <div className="border">
+                <div className="border">
 
                 <div className="content">
                     <div className="header">
@@ -61,7 +61,7 @@ export function Result() {
 
                         <div className="data-content">
                             <p>Quantidade de falhas</p>
-                            <p className="data">0</p>
+                            <p className="data">{errors}</p>
                         </div>
                     
                     </div>
