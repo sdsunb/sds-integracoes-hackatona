@@ -50,7 +50,7 @@ REACT_APP_RESPONSIBLE_EMAIL=seu@email.com
 
 As informações detalhadas de cada `.env` se encontram na Wiki do repositório.
 
-### Rode o projeto
+### 5. Rode o projeto
 `cd backend`  
 `yarn start`
 
